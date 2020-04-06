@@ -1,0 +1,3 @@
+in  this app use model serialization 
+and use browserapi to check our DRF api
+and also use Apiview
