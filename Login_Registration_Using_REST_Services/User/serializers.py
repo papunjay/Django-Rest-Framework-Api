@@ -14,3 +14,14 @@ class RegistrationSerializers(serializers.ModelSerializer):
                 'write_only': True
             }
         }
+
+
+class LoginSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'password'
+        ]
+        extra_kwargs = {'password': {'write_only': True}}
+
