@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate, get_user_model
 from django.views.generic import TemplateView
 User = get_user_model()
 
+
 class Home(TemplateView):
     template_name = 'home.html'
 
