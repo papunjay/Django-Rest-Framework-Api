@@ -25,7 +25,7 @@ class Login(GenericAPIView):
     serializer_class = LoginSerializers
 
     def get(self,request):
-        return render(request,'registration/login.html')
+        return render(request,'Login/login.html')
 
     def post(self, request):
         permission_classes = [permissions.AllowAny]
@@ -52,7 +52,7 @@ class Login(GenericAPIView):
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
     def get(self, request):
-        return render(request,'registration/signup.html')
+        return render(request,'Registration/signup.html')
         
     def post(self, request):
         if request.user.is_authenticated:
