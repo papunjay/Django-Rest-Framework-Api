@@ -15,15 +15,39 @@ from django.contrib.auth import authenticate, get_user_model
 from django.views.generic import TemplateView
 User = get_user_model()
 
-
-
 class Home(TemplateView):
     template_name = 'home.html'
 
 class welcome(TemplateView):
     template_name = 'welcome.html'
 
+class Login(GenericAPIView):
+    serializer_class = LoginSerializers
 
+    def get(self,request):
+        return render(request,'registration/login.html')
+
+    def post(self, request):
+        permission_classes = [permissions.AllowAny]
+        if request.user.is_authenticated :
+            return Response({'details': 'user is already authenticated'})
+        data = request.data
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
+        print(username,password)
+        qs = User.objects.filter(
+            Q(username__iexact=username) or
+            Q(password__iexact=password)
+        ).distinct()
+        if qs.count() == 1:
+            user_obj = qs.first()
+            if user_obj.check_password(password):
+                user = user_obj
+                login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+                return Response('login')
+            return Response("check password again")
+        return Response("multiple users are present with this username")
 
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
