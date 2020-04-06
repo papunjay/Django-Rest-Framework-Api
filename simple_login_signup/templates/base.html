@@ -1,0 +1,22 @@
+<!doctype html>
+<html> 
+<head> 
+    <title>{% block title %}{% endblock %}</title> 
+</head> 
+<body> 
+    <h1>User Login & Registration page</h1> 
+    <a href="{% url 'home' %}">HOME</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'password_change' %}">change_password</a>
+      <a href="{% url 'logout' %}">Log out</a>
+      <strong>  You are logged in as {{user.username}}</strong>
+    {% else %}
+      <a href="{% url 'signup' %}">SignUp</a>
+      <a href="{% url 'login' %}">Log In</a>
+     
+    {% endif %}
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body> 
+</html> 
