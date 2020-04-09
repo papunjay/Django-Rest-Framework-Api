@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', #new
     'User',#new
+    'django_short_url',#new
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+LOGIN_URL = 'login/'
+LOGOUT_URL = 'logout/'
+LOGIN_REDIRECT_URL = '/api/auth'
+SOCIALACCOUNT_QUERY_EMAIL = True
+AWS_BUCKET = os.getenv("AWS_BUCKET")
+EMAIL_BACKENDS = 'django.core.main.backends.console.EmailBackends'
+BASE_URL = os.getenv('BASE_URL')
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')

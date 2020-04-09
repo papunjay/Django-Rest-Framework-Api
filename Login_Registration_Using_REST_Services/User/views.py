@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
-from .models import Registration
+from .models import UsersData
 from rest_framework.authentication import authenticate
 from rest_framework.response import Response
 from django.contrib.auth import login, logout
@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from django.contrib.auth import authenticate, get_user_model
 from django.views.generic import TemplateView
+from django.contrib import messages
 User = get_user_model()
 
 
@@ -31,8 +32,8 @@ class Login(GenericAPIView):
     def post(self, request):
         permission_classes = [permissions.AllowAny]
         if request.user.is_authenticated :
-            return Response({'details': 'user is already authenticated'})
-        data = request.data
+            return HttpResponse({'details': 'user is already authenticated'})
+        data = request.POST
         username = data.get('username')
         password = data.get('password')
         user = authenticate(username=username, password=password)
@@ -47,8 +48,8 @@ class Login(GenericAPIView):
                 user = user_obj
                 login(request, user,backend='django.contrib.auth.backends.ModelBackend')
                 return Response('login')
-            return Response("check password again")
-        return Response("multiple users are present with this username")
+            return HttpResponse("check password again")
+        return HttpResponse("multiple users are present with this username")
 
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
@@ -57,16 +58,19 @@ class Registration(GenericAPIView):
         
     def post(self, request):
         if request.user.is_authenticated:
-            return Response("your are already registred,please do login")
-        data = request.data
+            
+            return HttpResponse("your are already registred,please do login")
+        data = request.POST
         username = data.get('username')
         email = data.get('email')
         password1 = data.get('password1')
         password2 = data.get('password2')
-        if len(password1) < 4 or len(password2) <4:
-            return Response("length of the password must be greater than 4") 
-        elif password1 != password2:
-            return Response("passwords are not matching")
+        # if len(password1) < 4 or len(password2) <4:
+        #     return HttpResponse("length of the password must be greater than 4") 
+            
+        if password1 != password2:
+            return HttpResponse("passwords are not matching")
+            
         qs_name = User.objects.filter(
             Q(username__iexact=username)
         )
@@ -74,13 +78,14 @@ class Registration(GenericAPIView):
             Q(email__iexact=email)
         )
         if qs_name.exists():
-            return Response("already user id present with this username ")
+            return HttpResponse("already user id present with this username ")
+            
         elif qs_email.exists():
-            return Response("already user id present with this  email")
+            return HttpResponse("already user id present with this  email")
+            
         else:
             user = User.objects.create(username=username, email=email)
             user.set_password(password1)
             user.is_active = False
             user.save()
-            return redirect('welcom')
-            print("user created")
+    
