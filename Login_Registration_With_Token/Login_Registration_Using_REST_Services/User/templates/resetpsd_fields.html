@@ -72,23 +72,21 @@ a {
 <form action="" method="POST">
   {% csrf_token %}
   <div class="container">
-    <h1>Login</h1>
-    <p>Please Enter Your user id and password.</p>
+    <h1>Reset your password</h1>
+    <p>Please Enter Your password.</p>
     <hr>
-    <label for="username"><b>username</b></label>
-    <input type="text" placeholder="Enter username" name="username" required>
-
     <label for="password"><b>password</b></label>
-    <input type="password" placeholder="Enter Password" name="Password" required>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <label for="confirm_password"><b>confirm_password</b></label>
+    <input type="text" placeholder="Enter confirm_password" name="confirm_password" required>
     
     <p> <a href="#"></a>.</p>
     <hr>
-    <button type="submit" class="registerbtn">Log in</button>
+    <button type="submit" class="registerbtn">Submit</button>
   </div>
   
   <div class="container signin">
-    <p>Already have an account? <a href="/register">signin</a>.</p>
-    <p>Already have an account? <a href="/forgotpassword">ForgetPassword</a>.</p>
   </div>
 </form>
 

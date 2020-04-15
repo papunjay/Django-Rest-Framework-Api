@@ -20,8 +20,10 @@ User = get_user_model()
 class Home(TemplateView):
     template_name = 'home.html'
 
+
 class welcome(TemplateView):
     template_name = 'welcome.html'
+
 
 class Login(GenericAPIView):
     serializer_class = LoginSerializers
@@ -51,6 +53,8 @@ class Login(GenericAPIView):
             return HttpResponse("check password again")
         return HttpResponse("multiple users are present with this username")
 
+
+
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
     def get(self, request):
@@ -78,7 +82,7 @@ class Registration(GenericAPIView):
             Q(email__iexact=email)
         )
         if qs_name.exists():
-            return HttpResponse("already user id present with this username ")
+            return HttpResponse("already user id pret with this username ")
             
         elif qs_email.exists():
             return HttpResponse("already user id present with this  email")
@@ -88,4 +92,5 @@ class Registration(GenericAPIView):
             user.set_password(password1)
             user.is_active = False
             user.save()
+            return HttpResponse("ragistration complited")
     

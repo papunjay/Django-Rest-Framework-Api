@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', #new
     'User',#new
-    'django_short_url',#new
+    'django_short_url'#new
+    #'rest_framework_jwt',
 ]
 
 MIDDLEWARE = [
@@ -77,23 +78,23 @@ WSGI_APPLICATION = 'Login_Registration_Using_REST_Services.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Users',
-        'USER': 'postgres',
-        'PASSWORD': 'vspr18',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'Users',
+#         'USER': 'postgres',
+#         'PASSWORD': 'vspr18',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -114,6 +115,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST_FRAMEWORKS = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#     ], 'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ],
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -134,18 +142,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-LOGIN_URL = 'login/'
-LOGOUT_URL = 'logout/'
-LOGIN_REDIRECT_URL = '/api/auth'
-SOCIALACCOUNT_QUERY_EMAIL = True
-AWS_BUCKET = os.getenv("AWS_BUCKET")
-EMAIL_BACKENDS = 'django.core.main.backends.console.EmailBackends'
-BASE_URL = os.getenv('BASE_URL')
-
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = 'mymail130801@gmail.com'
+EMAIL_HOST_PASSWORD ='k.s.v@.18'
+EMAIL_PORT = '587'
+
+
+
+
+#redis()
+# DB = 0
+# PORT = 6379
