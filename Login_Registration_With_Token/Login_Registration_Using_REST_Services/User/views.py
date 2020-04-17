@@ -135,3 +135,19 @@ class Login(GenericAPIView):
                 return HttpResponse("Invalid login details given")
         else:
             return render(request,'Login/login.html')
+
+
+
+class ForgotPassword(GenericAPIView):
+
+    def get(self,request):
+        return render(request,'forgotpassword.html')
+
+    def post(self,request):
+        email = request.POST.get('email')
+
+        try:
+            user = User.objects.filter(email=email)
+            useremail = user.values()[0]['email']
+            username = user.values()[0]["username"]
+            id = user.values()[0]["id"]
