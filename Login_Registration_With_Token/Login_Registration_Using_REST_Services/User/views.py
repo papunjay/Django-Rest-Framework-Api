@@ -110,3 +110,28 @@ def activate(request,surl):
             return HttpResponse('Inavalid username and password please register')
     except KeyError:
         return HttpResponse("Key error")
+
+
+class Login(GenericAPIView):
+    serializer_class = LoginSerializers
+    def get(self,request):
+        return render(request, 'Login/login.html')
+
+    def post(self, request):
+    #def Login(request):
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            #print(user)
+            if user:
+                if user.is_active:
+                    login(request,user)
+                    return HttpResponse("Welcome...")
+                else:
+                    return HttpResponse("Your account was inactive.")
+            else:
+                print("They used username: {} and password: {}".format(username,password))
+                return HttpResponse("Invalid login details given")
+        else:
+            return render(request,'Login/login.html')

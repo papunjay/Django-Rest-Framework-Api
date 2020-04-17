@@ -9,5 +9,5 @@ urlpatterns = [
 
     path('home/',Home.as_view(),name='home'),
     path('register/',Registration.as_view(),name='register'),
-
+    path('activate/<slug:surl>',activate, name='activate'),
 ]
