@@ -30,3 +30,5 @@ class ResetSerializers(serializers.ModelSerializer):
         model = User
         fields = [
             'password'
+        
+        ]
