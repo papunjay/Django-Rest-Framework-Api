@@ -92,3 +92,21 @@ class Registration(GenericAPIView):
             email.send()
 
             return HttpResponse("Check your mail and activate your accout")
+
+
+
+def activate(request,surl):
+    try:
+        token_object = ShortURL.objects.get(surl=surl)
+        token = token_object.lurl
+        decode = jwt.decode(token,SECRET_KEY)
+        user_name = decode['username']
+        user = User.objects.get(username=user_name)
+        if user is not None:
+            user.is_active = True
+            user.save()
+            return redirect('/login/')
+        else:
+            return HttpResponse('Inavalid username and password please register')
+    except KeyError:
+        return HttpResponse("Key error")

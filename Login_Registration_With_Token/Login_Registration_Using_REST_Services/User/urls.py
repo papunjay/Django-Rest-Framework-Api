@@ -6,7 +6,8 @@ from User.serializers import RegistrationSerializers
 from rest_framework_jwt.views import refresh_jwt_token, obtain_jwt_token
 
 urlpatterns = [
-    
+
     path('home/',Home.as_view(),name='home'),
+    path('register/',Registration.as_view(),name='register'),
 
 ]
