@@ -64,3 +64,31 @@ class Registration(GenericAPIView):
             user.set_password(password1)
             user.is_active = False
             user.save()
+
+            token = token_activation(user.username, password1)
+
+            current_site = get_current_site(request)
+            domain = current_site.domain
+
+            url = str(token)
+
+            surl = get_surl(url)
+
+            slug_url = surl.split('/')
+
+            print(slug_url[2])
+            mail_subject = "Click below link for activate your acount"
+
+            message = render_to_string('account_activation_link.html',{
+                'user' : user.username,
+                'domain' : domain,
+                'surl' : slug_url[2]
+            })
+
+            recipients = email
+
+            email = EmailMessage(mail_subject,message,to=[recipients])
+            print(message)
+            email.send()
+
+            return HttpResponse("Check your mail and activate your accout")
