@@ -214,3 +214,8 @@ class ResetPassword(GenericAPIView):
 
         else:
             return HttpResponse("Password missmatch")
+
+def logout(request):
+    #red.delete()
+    return render(request, 'logout.html')
+
