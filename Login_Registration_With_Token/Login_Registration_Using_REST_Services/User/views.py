@@ -151,7 +151,7 @@ class ForgotPassword(GenericAPIView):
             useremail = user.values()[0]['email']
             username = user.values()[0]["username"]
             id = user.values()[0]["id"]
-            
+
             if useremail is not None:
                 token = token_activation(username,id)
 
@@ -173,3 +173,19 @@ class ForgotPassword(GenericAPIView):
         except TypeError:
             print("Type error")
 
+
+def reset_password(request, surl):
+    
+    try:
+        tokenobject = ShortURL.objects.get(surl=surl)
+        token = tokenobject.lurl
+        decode = jwt.decode(token, SECRET_KEY)
+        username = decode['username']
+        user = User.objects.get(username=username)
+        
+        if user is not None:
+            return redirect('/resetpassword/' + str(user)+'/')
+        else:
+            return redirect('/forgotpassword/')
+    except KeyError:
+        return HttpResponse("Key Error")
