@@ -22,16 +22,16 @@ from django.contrib.auth import login, logout
 import jwt
 
 class Home(TemplateView):
-    template_name = 'home.html'
+    template_name = 'UserTemplates/home.html'
 
 
 class welcome(TemplateView):
-    template_name = 'welcome.html'
+    template_name = 'UserTemplates/welcome.html'
 
 class Login(GenericAPIView):
     serializer_class = LoginSerializers
     def get(self,request):
-        return render(request, 'Login/login.html')
+        return render(request, 'UserTemplates/login.html')
 
     def post(self, request):
     #def Login(request):
@@ -50,12 +50,12 @@ class Login(GenericAPIView):
                 print("They used username: {} and password: {}".format(username,password))
                 return HttpResponse("Invalid login details given")
         else:
-            return render(request,'Login/login.html')
+            return render(request,'UserTemplates/login.html')
 
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
     def get(self, request):
-        return render(request,'Registration/signup.html')
+        return render(request,'UserTemplates/signup.html')
         
     def post(self, request):
         if request.user.is_authenticated:
@@ -102,7 +102,7 @@ class Registration(GenericAPIView):
             print(slug_url[2])
             mail_subject = "Click below link for activate your acount"
 
-            message = render_to_string('account_activation_link.html',{
+            message = render_to_string('UserTemplates/account_activation_link.html',{
                 'user' : user.username,
                 'domain' : domain,
                 'surl' : slug_url[2]
@@ -136,7 +136,7 @@ def activate(request,surl):
 class ForgotPassword(GenericAPIView):
 
     def get(self,request):
-        return render(request,'forgotpassword.html')
+        return render(request,'UserTemplates/forgotpassword.html')
 
     def post(self,request):
         email = request.POST.get('email')
@@ -154,7 +154,7 @@ class ForgotPassword(GenericAPIView):
                 surl = get_surl(url)
                 slug_url = surl.split('/')
                 mail_subject = "reset your account password by clicking below link"
-                mail_message = render_to_string('reset_password_token_link.html', {
+                mail_message = render_to_string('UserTemplates/reset_password_token_link.html', {
                     'user': username,
                     'domain': get_current_site(request).domain,
                     'surl': slug_url[2]
@@ -191,7 +191,7 @@ class ResetPassword(GenericAPIView):
     # serializer_class = ResetSerializers
 
     def get(self,request,user_reset):
-        return render(request,"resetpassword.html")
+        return render(request,"UserTemplates/resetpassword.html")
         
     def post(self, request,user_reset):
         password = request.POST.get("password")
@@ -214,5 +214,5 @@ class ResetPassword(GenericAPIView):
 
 def logout(request):
     #red.delete()
-    return render(request, 'logout.html')
+    return render(request, 'UserTemplates/logout.html')
 
