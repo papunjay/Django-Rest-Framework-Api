@@ -27,3 +27,40 @@ class Home(TemplateView):
 
 class welcome(TemplateView):
     template_name = 'welcome.html'
+
+
+
+class Registration(GenericAPIView):
+    serializer_class = RegistrationSerializers
+    def get(self, request):
+        return render(request,'Registration/signup.html')
+        
+    def post(self, request):
+        if request.user.is_authenticated:
+            
+            return HttpResponse("your are already registred,please do login")
+        data = request.POST
+        username = data.get('username')
+        email = data.get('email')
+        password1 = data.get('password1')
+        password2 = data.get('password2')
+        if password1 != password2:
+            return HttpResponse("passwords are not matching")
+            
+        qs_name = User.objects.filter(
+            Q(username__iexact=username)
+        )
+        qs_email = User.objects.filter(
+            Q(email__iexact=email)
+        )
+        if qs_name.exists():
+            return HttpResponse("already user id pret with this username ")
+            
+        elif qs_email.exists():
+            return HttpResponse("already user id present with this  email")
+            
+        else:
+            user = User.objects.create(username=username, email=email)
+            user.set_password(password1)
+            user.is_active = False
+            user.save()
