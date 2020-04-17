@@ -151,3 +151,25 @@ class ForgotPassword(GenericAPIView):
             useremail = user.values()[0]['email']
             username = user.values()[0]["username"]
             id = user.values()[0]["id"]
+            
+            if useremail is not None:
+                token = token_activation(username,id)
+
+                url = str(token)
+                surl = get_surl(url)
+                slug_url = surl.split('/')
+                mail_subject = "reset your account password by clicking below link"
+                mail_message = render_to_string('reset_password_token_link.html', {
+                    'user': username,
+                    'domain': get_current_site(request).domain,
+                    'surl': slug_url[2]
+                })
+                print(mail_message)
+                recipientemail = useremail
+                email = EmailMessage(mail_subject, mail_message, to=[recipientemail])
+                email.send()
+
+            return HttpResponse("Check your mail")
+        except TypeError:
+            print("Type error")
+
