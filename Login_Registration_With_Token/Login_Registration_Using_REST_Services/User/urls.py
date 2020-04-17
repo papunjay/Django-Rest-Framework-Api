@@ -12,4 +12,6 @@ urlpatterns = [
     path('activate/<slug:surl>',activate, name='activate'),
     path('login/',Login.as_view(),name='login'),
     path('forgotpassword/',ForgotPassword.as_view(),name="forgotpassword"),
+    path('reset_password/<slug:surl>/', reset_password, name="reset_password"),
+    path('resetpassword/<user_reset>/',ResetPassword.as_view(), name="resetpassword"),
 ]
