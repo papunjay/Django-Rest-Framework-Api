@@ -9,3 +9,13 @@ class UsersData(models.Model):
 
     def __str__(self):
         return self.username
+
+       
+class LoginSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'password'
+        ]
+        extra_kwargs = {'password': {'write_only': True}}
