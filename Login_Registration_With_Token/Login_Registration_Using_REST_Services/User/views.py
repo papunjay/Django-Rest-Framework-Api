@@ -189,3 +189,28 @@ def reset_password(request, surl):
             return redirect('/forgotpassword/')
     except KeyError:
         return HttpResponse("Key Error")
+
+
+class ResetPassword(GenericAPIView):
+    # serializer_class = ResetSerializers
+
+    def get(self,request,user_reset):
+        return render(request,"resetpassword.html")
+        
+    def post(self, request,user_reset):
+        password = request.POST.get("password")
+        confirmPassword = request.POST.get("confirm_password")
+
+        if password == confirmPassword:
+    
+            try:
+                user = User.objects.get(username=user_reset)
+                user.set_password(password)
+                user.save()
+                return redirect('/login/')
+
+            except KeyError:
+                return HttpResponse("Key Error")
+
+        else:
+            return HttpResponse("Password missmatch")
