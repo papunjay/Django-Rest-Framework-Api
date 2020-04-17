@@ -28,7 +28,29 @@ class Home(TemplateView):
 class welcome(TemplateView):
     template_name = 'welcome.html'
 
+class Login(GenericAPIView):
+    serializer_class = LoginSerializers
+    def get(self,request):
+        return render(request, 'Login/login.html')
 
+    def post(self, request):
+    #def Login(request):
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            #print(user)
+            if user:
+                if user.is_active:
+                    login(request,user)
+                    return HttpResponse("Welcome...")
+                else:
+                    return HttpResponse("Your account was inactive.")
+            else:
+                print("They used username: {} and password: {}".format(username,password))
+                return HttpResponse("Invalid login details given")
+        else:
+            return render(request,'Login/login.html')
 
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
@@ -65,6 +87,7 @@ class Registration(GenericAPIView):
             user.is_active = False
             user.save()
 
+            
             token = token_activation(user.username, password1)
 
             current_site = get_current_site(request)
@@ -94,7 +117,6 @@ class Registration(GenericAPIView):
             return HttpResponse("Check your mail and activate your accout")
 
 
-
 def activate(request,surl):
     try:
         token_object = ShortURL.objects.get(surl=surl)
@@ -110,33 +132,6 @@ def activate(request,surl):
             return HttpResponse('Inavalid username and password please register')
     except KeyError:
         return HttpResponse("Key error")
-
-
-class Login(GenericAPIView):
-    serializer_class = LoginSerializers
-    def get(self,request):
-        return render(request, 'Login/login.html')
-
-    def post(self, request):
-    #def Login(request):
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(username=username, password=password)
-            #print(user)
-            if user:
-                if user.is_active:
-                    login(request,user)
-                    return HttpResponse("Welcome...")
-                else:
-                    return HttpResponse("Your account was inactive.")
-            else:
-                print("They used username: {} and password: {}".format(username,password))
-                return HttpResponse("Invalid login details given")
-        else:
-            return render(request,'Login/login.html')
-
-
 
 class ForgotPassword(GenericAPIView):
 
@@ -191,6 +186,7 @@ def reset_password(request, surl):
         return HttpResponse("Key Error")
 
 
+
 class ResetPassword(GenericAPIView):
     # serializer_class = ResetSerializers
 
@@ -214,6 +210,7 @@ class ResetPassword(GenericAPIView):
 
         else:
             return HttpResponse("Password missmatch")
+
 
 def logout(request):
     #red.delete()
