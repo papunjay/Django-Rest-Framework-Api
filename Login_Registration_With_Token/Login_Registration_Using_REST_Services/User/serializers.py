@@ -14,3 +14,9 @@ class RegistrationSerializers(serializers.ModelSerializer):
                 'write_only': True
             }
         }
+
+class ResetSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'password'
