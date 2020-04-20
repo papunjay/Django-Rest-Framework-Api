@@ -141,3 +141,8 @@ EMAIL_HOST_USER = 'mymail130801@gmail.com'
 EMAIL_HOST_PASSWORD ='k.s.v@.18'
 EMAIL_PORT = '587'
 
+
+
+#redis()
+# DB = 0
+# PORT = 6379
