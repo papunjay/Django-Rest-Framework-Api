@@ -1,6 +1,6 @@
 import datetime
 import jwt
-from Login_Registration_Using_REST_Services.settings import SECRET_KEY
+from Chat_Aapplication.settings import SECRET_KEY
 AUTH_ENDPOINT = "http://127.0.0.1:8000/auth/jwt/"
 
 

@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 User = get_user_model()
 import json
-from Login_Registration_Using_REST_Services.settings import SECRET_KEY
+from Chat_Aapplication.settings import SECRET_KEY
 from django.contrib.auth.models import User,auth
 from django.contrib.auth import login, logout
 import jwt
