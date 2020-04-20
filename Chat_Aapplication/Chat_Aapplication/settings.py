@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Chat_Aapplication.wsgi.application'
+#WSGI_APPLICATION = 'Chat_Aapplication.wsgi.application'
 ASGI_APPLICATION = 'Chat_Aapplication.routing.application'
 
 # Database
