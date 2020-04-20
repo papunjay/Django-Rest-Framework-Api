@@ -1,3 +1,0 @@
-this is simple a Employee info application.
-use basic and simple serialization and  
-create third party python app to check our application
