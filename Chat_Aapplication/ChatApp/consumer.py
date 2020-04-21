@@ -8,6 +8,9 @@ class ChatConsumer(WebsocketConsumer):
     def fetch_messages(self,data):
         pass
 
+    def new_message(self,data):
+        pass
+
    
     
 
