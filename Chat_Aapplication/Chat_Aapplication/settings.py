@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'ChatApp', #new
     'User', #new
+    'channels',# new
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,11 @@ EMAIL_PORT = '587'
 #redis()
 # DB = 0
 # PORT = 6379
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}  
