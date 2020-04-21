@@ -43,7 +43,8 @@ class Login(GenericAPIView):
             if user:
                 if user.is_active:
                     login(request,user)
-                    return HttpResponse("Welcome...")
+                    #return HttpResponse("Welcome...")
+                    return render(request, 'chat/index.html')
                 else:
                     return HttpResponse("Your account was inactive.")
             else:
