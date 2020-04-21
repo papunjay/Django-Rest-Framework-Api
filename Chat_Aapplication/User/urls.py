@@ -8,7 +8,7 @@ urlpatterns = [
     path('home/',Home.as_view(),name='home'),
     path('register/',Registration.as_view(),name='register'),
     path('login/',Login.as_view(),name='login'),
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('welcome/',welcome.as_view(),name='welcome'),
     path('activate/<slug:surl>',activate, name='activate'),
     path('forgotpassword/',ForgotPassword.as_view(),name="forgotpassword"),
