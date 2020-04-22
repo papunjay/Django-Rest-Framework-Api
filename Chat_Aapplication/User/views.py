@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import UsersData
+from .models import UsersData,LoggedUser
 from django.contrib.auth import login, logout
 from django.db.models import Q
 from rest_framework.generics import GenericAPIView
@@ -20,6 +20,8 @@ from Chat_Aapplication.settings import SECRET_KEY
 from django.contrib.auth.models import User,auth
 from django.contrib.auth import login, logout
 import jwt
+from .redis import Redis
+red = Redis()
 
 class Home(TemplateView):
     template_name = 'UserTemplates/home.html'
@@ -28,30 +30,71 @@ class Home(TemplateView):
 class welcome(TemplateView):
     template_name = 'UserTemplates/welcome.html'
 
+# class Login(GenericAPIView):
+#     serializer_class = LoginSerializers
+#     def get(self,request):
+#         return render(request, 'UserTemplates/login.html')
+
+#     def post(self, request):
+#     #def Login(request):
+#         if request.method == 'POST':
+#             username = request.POST.get('username')
+#             password = request.POST.get('password')
+#             user = authenticate(username=username, password=password)
+#             #print(user)
+#             if user:
+#                 if user.is_active:
+#                     login(request,user)
+#                     #return HttpResponse("Welcome...")
+#                     return render(request, 'chat/index.html')
+#                 else:
+#                     return HttpResponse("Your account was inactive.")
+#             else:
+#                 print("They used username: {} and password: {}".format(username,password))
+#                 return HttpResponse("Invalid login details given")
+#         else:
+#             return render(request,'UserTemplates/login.html')
+
+
+
 class Login(GenericAPIView):
+#def login(request):
     serializer_class = LoginSerializers
     def get(self,request):
         return render(request, 'UserTemplates/login.html')
 
     def post(self, request):
-    #def Login(request):
         if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            user = authenticate(username=username, password=password)
-            #print(user)
-            if user:
-                if user.is_active:
-                    login(request,user)
-                    #return HttpResponse("Welcome...")
-                    return render(request, 'chat/index.html')
-                else:
-                    return HttpResponse("Your account was inactive.")
-            else:
-                print("They used username: {} and password: {}".format(username,password))
-                return HttpResponse("Invalid login details given")
+            username = request.POST['username']
+            password = request.POST['password']
+
+        # validation is done
+        if username == "" or password == "":
+            #messages.info(request, "one of the above field is empty")
+            return redirect('/login')
+        user = auth.authenticate(username=username, password=password)
+
+        # if user is not none then we will generate token and we will store the token in redis data base
+        if user is not None:
+            data = {
+                'username': username,
+                'password': password
+            }
+            # here token is created and data is stored in redis
+            token = token_activation(user.username, password)
+            red.set(user.username,token)
+            userlist = []
+            logged_user = LoggedUser.objects.all().order_by('username')
+            
+            for i in logged_user:
+                if i.username != username:
+                    userlist.append(i.username)
+            return render(request, 'chat/index.html')
         else:
-            return render(request,'UserTemplates/login.html')
+            return render(request, 'UserTemplates/login.html')
+
+
+
 
 class Registration(GenericAPIView):
     serializer_class = RegistrationSerializers
@@ -214,6 +257,9 @@ class ResetPassword(GenericAPIView):
 
 
 def logout(request):
-    #red.delete()
+    red.delete()
     return render(request, 'UserTemplates/logout.html')
 
+
+def session(request):
+    return render(request, 'UserTemplates/session.html')
