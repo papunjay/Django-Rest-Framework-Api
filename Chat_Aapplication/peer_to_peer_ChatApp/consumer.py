@@ -7,4 +7,7 @@ from .models import thread,ChatMessage
 
 
 class ChatConsumer(AsyncConsumer):
+    async def websocket_connect(self,event):
+        print("connected",event)
     
+  
