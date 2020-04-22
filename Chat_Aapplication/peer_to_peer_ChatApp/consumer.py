@@ -10,4 +10,7 @@ class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self,event):
         print("connected",event)
     
-  
+    async def websocket_receive(self,event):
+        print("receive",event)
+
+   
