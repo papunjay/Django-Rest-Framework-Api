@@ -23,38 +23,13 @@ import jwt
 from .redis import Redis
 red = Redis()
 
+
 class Home(TemplateView):
     template_name = 'UserTemplates/home.html'
 
 
 class welcome(TemplateView):
     template_name = 'UserTemplates/welcome.html'
-
-# class Login(GenericAPIView):
-#     serializer_class = LoginSerializers
-#     def get(self,request):
-#         return render(request, 'UserTemplates/login.html')
-
-#     def post(self, request):
-#     #def Login(request):
-#         if request.method == 'POST':
-#             username = request.POST.get('username')
-#             password = request.POST.get('password')
-#             user = authenticate(username=username, password=password)
-#             #print(user)
-#             if user:
-#                 if user.is_active:
-#                     login(request,user)
-#                     #return HttpResponse("Welcome...")
-#                     return render(request, 'chat/index.html')
-#                 else:
-#                     return HttpResponse("Your account was inactive.")
-#             else:
-#                 print("They used username: {} and password: {}".format(username,password))
-#                 return HttpResponse("Invalid login details given")
-#         else:
-#             return render(request,'UserTemplates/login.html')
-
 
 
 class Login(GenericAPIView):
@@ -82,7 +57,7 @@ class Login(GenericAPIView):
             }
             # here token is created and data is stored in redis
             token = token_activation(user.username, password)
-            red.set(user.username,token)
+            red.set(username,token)
             userlist = []
             logged_user = LoggedUser.objects.all().order_by('username')
             
@@ -92,7 +67,6 @@ class Login(GenericAPIView):
             return render(request, 'chat/index.html')
         else:
             return render(request, 'UserTemplates/login.html')
-
 
 
 
@@ -143,7 +117,7 @@ class Registration(GenericAPIView):
 
             slug_url = surl.split('/')
 
-            print(slug_url[2])
+            #print(slug_url[2])
             mail_subject = "Click below link for activate your acount"
 
             message = render_to_string('UserTemplates/account_activation_link.html',{
@@ -161,6 +135,7 @@ class Registration(GenericAPIView):
             return HttpResponse("Check your mail and activate your accout")
 
 
+
 def activate(request,surl):
     try:
         token_object = ShortURL.objects.get(surl=surl)
@@ -176,6 +151,7 @@ def activate(request,surl):
             return HttpResponse('Inavalid username and password please register')
     except KeyError:
         return HttpResponse("Key error")
+
 
 class ForgotPassword(GenericAPIView):
 
@@ -228,7 +204,6 @@ def reset_password(request, surl):
             return redirect('/forgotpassword/')
     except KeyError:
         return HttpResponse("Key Error")
-
 
 
 class ResetPassword(GenericAPIView):

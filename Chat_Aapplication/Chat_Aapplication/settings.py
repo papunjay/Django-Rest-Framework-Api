@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'ChatApp', #new
     'User', #new
     'channels',# new
-    'peer_to_peer_ChatApp' #new
+    #'peer_to_peer_ChatApp' #new
 ]
 
 MIDDLEWARE = [

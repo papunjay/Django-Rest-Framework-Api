@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import jwt
 from Chat_Aapplication.settings import SECRET_KEY
 AUTH_ENDPOINT = "http://127.0.0.1:8000/auth/jwt/"
@@ -17,11 +17,6 @@ def token_activation(username, password):
 
 
 # def token_validation(username, password):
-#     """
-#     :param username: takes user name as parameter
-#     :param password: takes password
-#     :return: will return token
-#     """
 
 #     data = {
 #         'username': username,

@@ -12,29 +12,4 @@ class Message(models.Model):
     def __str__(self):
         return self.author.username
 
-    def last_10_message(self):
-        return Message.objects.order_by('-timestamp').all()[:10]
 
-
-
-class LoggedUser(models.Model):
-    username = models.CharField(max_length=30, primary_key=True)
-
-    def __unicode__(self):
-        return self.username
-
-
-def login_user(sender, request, user, **kwargs):
-    LoggedUser(username=user.username).save()
-
-
-def logout_user(sender, request, user, **kwargs):
-    try:
-        u = LoggedUser.objects.get(pk=user.username)
-        u.delete()
-    except LoggedUser.DoesNotExist:
-        pass
-
-
-user_logged_in.connect(login_user)
-user_logged_out.connect(logout_user)
